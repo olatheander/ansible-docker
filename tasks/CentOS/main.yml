@@ -1,0 +1,29 @@
+---
+
+- name: include distribution specific variables.
+  include_vars: "{{ item }}"
+  with_items:
+  - "{{ ansible_distribution }}/main.yml"
+  - "{{ ansible_distribution }}/{{ ansible_distribution_release }}-vars.yml"
+
+- name: Add EPEL repository
+  yum_repository:
+    name: epel
+    description: EPEL YUM repo
+    baseurl: "{{ epel_baseurl }}"
+    gpgkey: "{{ epel_gpgkey }}"
+    gpgcheck: yes
+
+- name: Add Docker yum repo
+  yum_repository:
+    name: dockerrepo
+    description: Docker Repository
+    file: yum.docker
+    baseurl: "{{ docker_baseurl }}"
+    gpgkey: "{{ docker_gpgkey }}"
+    gpgcheck: yes
+
+- name: Upgrade all packages
+  yum:
+    name=*
+    state=latest

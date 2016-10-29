@@ -1,0 +1,29 @@
+---
+
+- name: include platform specific tasks & variables.
+  include: "{{ ansible_distribution }}/main.yml"
+
+- name: add apparmor
+  package: name=apparmor state=latest
+  when: install_apparmor == true
+
+- name: add docker-engine
+  package: name=docker-engine state=latest
+  
+- name: start docker service
+  service:
+    name=docker
+    state=started
+
+# Configure the storage driver for Docker, see https://docs.docker.com/engine/userguide/storagedriver/imagesandcontainers/
+# for more information.
+- name: configure docker storage driver
+  include: "{{ ansible_distribution }}/configure_storage_driver.yml"
+
+- name: install pip
+  package: name={{item}} state=latest
+  with_items: "{{ pip_packages }}"
+
+- name: install docker-py
+  pip: name=docker-py state=latest
+

@@ -1,0 +1,12 @@
+---
+
+# Configure the storage driver for Docker, see https://docs.docker.com/engine/userguide/storagedriver/imagesandcontainers/
+# for more information.
+- name: configure docker storage driver
+  lineinfile:
+    dest="{{ docker_service_path }}"
+    regexp="^ExecStart=/usr/bin/dockerd .*$"
+    line="ExecStart=/usr/bin/dockerd -s {{ storage_driver }}"
+  notify:
+  - reload systemd
+  - restart docker

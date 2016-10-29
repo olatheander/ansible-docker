@@ -1,0 +1,22 @@
+---
+- name: include distribution specific variables.
+  include_vars: "{{ item }}"
+  with_items:
+  - "{{ ansible_distribution }}/main.yml"
+  - "{{ ansible_distribution }}/{{ ansible_distribution_release }}-vars.yml"
+
+- name: perform an apt-get update.
+  apt: update_cache=yes
+
+- name: include distribution specific tasks.
+  include: "{{ ansible_distribution_release }}-tasks.yml"
+
+- name: add keys
+  apt_key: keyserver="{{ apt_keyserver }}" id="{{ apt_key_id }}"
+
+- name: add apt_repository
+  apt_repository: repo="{{repository}}"
+
+- name: perform an apt-get update.
+  apt: update_cache=yes
+

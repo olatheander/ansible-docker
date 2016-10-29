@@ -1,0 +1,11 @@
+---
+
+# Python development packages
+pip_packages:
+  - python-pip
+
+# yum repository parameters.
+epel_baseurl: http://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+epel_gpgkey: http://download.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-$releasever
+docker_baseurl: https://yum.dockerproject.org/repo/main/centos/$releasever/
+docker_gpgkey: https://yum.dockerproject.org/gpg

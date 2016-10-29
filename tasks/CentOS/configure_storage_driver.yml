@@ -1,0 +1,17 @@
+---
+
+- name: configure modules-load.d for overlay driver.
+  copy: src=CentOS/overlay.conf dest=/etc/modules-load.d/overlay.conf
+
+- name: load the overlay module
+  modprobe: name=overlay state=present
+
+- name: make sure the docker.service.d directory exists.
+  file: path=/etc/systemd/system/docker.service.d state=directory
+
+- name: configure the Docker storage driver override.
+  copy: src=CentOS/override.conf dest=/etc/systemd/system/docker.service.d/override.conf
+  notify:
+  - reload systemd
+  - restart docker
+
