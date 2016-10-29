@@ -20,10 +20,6 @@
 - name: configure docker storage driver
   include: "{{ ansible_distribution }}/configure_storage_driver.yml"
 
-- name: install pip
-  package: name={{item}} state=latest
-  with_items: "{{ pip_packages }}"
-
 - name: install docker-py
   pip: name=docker-py state=latest
 
